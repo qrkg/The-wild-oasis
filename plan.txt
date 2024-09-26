@@ -1,0 +1,62 @@
+**1. SQL Server Integration
+**1.1. Storing Image Metadata:
+
+Database Tables: Use SQL Server to store metadata about your images. For instance, store URLs or paths to images along with any relevant data (e.g., user profiles or cabin details).
+Example Table Schema:
+
+sql
+Copy code
+CREATE TABLE UserImages (
+    UserId INT PRIMARY KEY,
+    ImageUrl NVARCHAR(MAX)
+);
+
+CREATE TABLE CabinImages (
+    CabinId INT PRIMARY KEY,
+    ImageUrl NVARCHAR(MAX)
+);
+**1.2. Storing Image URLs:
+
+Image URLs: Store the URLs or paths of images in SQL Server. These URLs will point to where the images are stored in cloud storage (e.g., Firebase Storage or Supabase Storage).
+Example Insert Statement:
+
+sql
+Copy code
+INSERT INTO UserImages (UserId, ImageUrl)
+VALUES (1, 'https://your-storage-url/user-images/1/profile.jpg');
+**2. Frontend Integration
+**2.1. Static Assets:
+
+Logo: As previously mentioned, include static assets like logos directly in your frontend project. This approach is independent of your backend storage solution.
+**2.2. Dynamic Images:
+
+Fetching URLs: Fetch image URLs from SQL Server via your API endpoints and use them in your frontend to display user and cabin images.
+Example API Response:
+
+json
+Copy code
+{
+  "user": {
+    "id": 1,
+    "profilePicture": "https://your-storage-url/user-images/1/profile.jpg"
+  }
+}
+Example Frontend Display:
+
+jsx
+Copy code
+const UserProfile = ({ user }) => (
+  <div>
+    <img src={user.profilePicture} alt="Profile" />
+  </div>
+);
+**3. Workflow
+Upload Images: Upload images to a cloud storage service (Firebase, Supabase).
+Store URLs: Save the image URLs or paths in SQL Server.
+Frontend: Fetch these URLs from your backend API and use them in your frontend to display images.
+Static Files: Keep static assets like logos in your frontend build directory.
+Benefits
+Scalability: Cloud storage services are designed to handle large volumes of images and provide efficient delivery through CDNs.
+Separation of Concerns: SQL Server handles structured data, while cloud storage manages unstructured data (images).
+Performance: Combining cloud storage for images and SQL Server for data ensures that each part of your application is optimized for its specific role.
+By using SQL Server for database management and a cloud storage service for images, you leverage the strengths of each technology without conflict.
